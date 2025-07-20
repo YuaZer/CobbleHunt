@@ -1,0 +1,19 @@
+#任务名
+测试任务:
+  #计数条件
+  countConditions:
+    捕捉闪光阿勃梭鲁:
+      type: "capture"
+      conditions:
+        - "'%pokemon_shiny%' == 'true'"
+    击败20级以上宝可梦:
+      type: "beat"
+      conditions:
+        - "'%pokemon_level%' >= 20"
+  #提交任务所需条件
+  submitConditions:
+    - "%捕捉闪光阿勃梭鲁% > 3"
+    - "%击败20级以上宝可梦% >= 3"
+  #任务奖励
+  rewards: |-
+    command inline "minecraft:give {{ sender }} DIAMOND 1" as op

@@ -1,0 +1,33 @@
+{
+  "schemaVersion": 1,
+  "id": "cobblehunt",
+  "version": "${version}",
+  "name": "CobbleHunt",
+  "description": "",
+  "authors": [],
+  "contact": {},
+  "license": "All-Rights-Reserved",
+  "icon": "assets/cobblehunt/icon.png",
+  "environment": "server",
+  "entrypoints": {
+    "fabric-datagen": [
+
+    ],
+    "main": [
+      "io.github.yuazer.cobblehunt.CobbleHuntPlugin"
+    ]
+  },
+  "mixins": [
+    "cobblehunt.mixins.json",
+    {
+      "config": "cobblehunt.client.mixins.json",
+      "environment": "client"
+    }
+  ],
+  "depends": {
+    "fabricloader": ">=${loader_version}",
+    "fabric-language-kotlin": ">=${kotlin_loader_version}",
+    "fabric": "*",
+    "minecraft": "${minecraft_version}"
+  }
+}

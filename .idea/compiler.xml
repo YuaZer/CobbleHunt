@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <bytecodeTargetLevel target="21" />
+  </component>
+  <component name="JavacSettings">
+    <option name="ADDITIONAL_OPTIONS_STRING" value="-AoutRefMapFile=D:\Minecraft\插件制作\插件开发空间\CobbleHunt-1.21.1\build\classes\java\client\client-CobbleHunt-refmap.json -AdefaultObfuscationEnv=named:intermediary -Aquiet=true -AoutMapFileNamedIntermediary=D:\Minecraft\插件制作\插件开发空间\CobbleHunt-1.21.1\build\loom-cache\mixin-map-loom.mappings.1_21_1.layered+hash.2198-v2.client.tiny -AinMapFileNamedIntermediary=E:\GradleTemp\.gradle\caches\fabric-loom\1.21.1\loom.mappings.1_21_1.layered+hash.2198-v2\mappings.tiny" />
+    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="CobbleHunt-1.21.1.main" options="-AoutRefMapFile=D:\Minecraft\插件制作\插件开发空间\CobbleHunt-1.21.1\build\classes\java\main\cobblehunt-1-21-1-refmap.json -AdefaultObfuscationEnv=named:intermediary -Aquiet=true -AoutMapFileNamedIntermediary=D:\Minecraft\插件制作\插件开发空间\CobbleHunt-1.21.1\build\loom-cache\mixin-map-loom.mappings.1_21_1.layered+hash.2198-v2.main.tiny -AinMapFileNamedIntermediary=E:\GradleTemp\.gradle\caches\fabric-loom\1.21.1\loom.mappings.1_21_1.layered+hash.2198-v2\mappings.tiny" />
+      <module name="CobbleHunt-1.21.1.test" options="-AoutRefMapFile=D:\Minecraft\插件制作\插件开发空间\CobbleHunt-1.21.1\build\classes\java\test\test-cobblehunt-1-21-1-refmap.json -AdefaultObfuscationEnv=named:intermediary -Aquiet=true -AoutMapFileNamedIntermediary=D:\Minecraft\插件制作\插件开发空间\CobbleHunt-1.21.1\build\loom-cache\mixin-map-loom.mappings.1_21_1.layered+hash.2198-v2.test.tiny -AinMapFileNamedIntermediary=E:\GradleTemp\.gradle\caches\fabric-loom\1.21.1\loom.mappings.1_21_1.layered+hash.2198-v2\mappings.tiny" />
+      <module name="CobbleHunt.main" options="-AoutRefMapFile=D:\Minecraft\插件制作\插件开发空间\CobbleHunt-1.21.1\build\classes\java\main\CobbleHunt-refmap.json -AdefaultObfuscationEnv=named:intermediary -Aquiet=true -AoutMapFileNamedIntermediary=D:\Minecraft\插件制作\插件开发空间\CobbleHunt-1.21.1\build\loom-cache\mixin-map-loom.mappings.1_21_1.layered+hash.2198-v2.main.tiny -AinMapFileNamedIntermediary=E:\GradleTemp\.gradle\caches\fabric-loom\1.21.1\loom.mappings.1_21_1.layered+hash.2198-v2\mappings.tiny" />
+      <module name="CobbleHunt.test" options="-AoutRefMapFile=D:\Minecraft\插件制作\插件开发空间\CobbleHunt-1.21.1\build\classes\java\test\test-CobbleHunt-refmap.json -AdefaultObfuscationEnv=named:intermediary -Aquiet=true -AoutMapFileNamedIntermediary=D:\Minecraft\插件制作\插件开发空间\CobbleHunt-1.21.1\build\loom-cache\mixin-map-loom.mappings.1_21_1.layered+hash.2198-v2.test.tiny -AinMapFileNamedIntermediary=E:\GradleTemp\.gradle\caches\fabric-loom\1.21.1\loom.mappings.1_21_1.layered+hash.2198-v2\mappings.tiny" />
+    </option>
+  </component>
+</project>

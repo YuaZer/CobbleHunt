@@ -1,0 +1,15 @@
+reload-message: "&a重载成功！"
+player-only: "&c只有玩家才能执行该命令!"
+
+not-online: "&c玩家不在线!"
+server-player-null: "&c获取ServerPlayer对象失败!"
+
+add-task-message: "&a添加任务成功!"
+task-already-exists: "&c任务已存在!"
+task-not-exists: "&c任务不存在!"
+task-remove-message: "&a删除任务成功!"
+no-tasks: "&c没有任务!"
+submit-message: "&a提交任务成功!"
+eval-not-pass: "&c任务条件未通过!"
+task-not-completed: "&c任务未完成!"
+task-already-completed: "&c任务已完成!"
