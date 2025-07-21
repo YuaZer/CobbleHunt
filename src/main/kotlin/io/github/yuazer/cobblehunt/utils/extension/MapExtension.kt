@@ -61,7 +61,7 @@ object MapExtension {
      * 保存全部数据到 YAML 文件
      */
     fun StringListMap.saveToYaml(file: File) {
-        val config = Configuration.empty(Type.YAML)
+        val config = Configuration.loadFromFile(file, Type.YAML)
         this.keys().forEach { key ->
             val valueList = this[key]
             config[key] = valueList // List<String> 可直接写入
@@ -73,7 +73,7 @@ object MapExtension {
      * 只保存指定 key（如玩家）到 YAML 文件
      */
     fun StringListMap.saveKeyToYaml(key: String, file: File) {
-        val config = Configuration.empty(Type.YAML)
+        val config = Configuration.loadFromFile(file, Type.YAML)
         config[key] = this[key]
         config.saveToFile(file)
     }

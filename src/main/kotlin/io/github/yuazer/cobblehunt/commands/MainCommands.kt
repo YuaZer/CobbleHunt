@@ -7,6 +7,7 @@ import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
 import taboolib.common.platform.command.*
 import taboolib.expansion.createHelper
+import taboolib.module.chat.colored
 import taboolib.module.lang.Language
 import taboolib.platform.util.onlinePlayers
 import taboolib.platform.util.sendLang
@@ -86,8 +87,8 @@ object MainCommands {
                     sender.sendLang("no-tasks")
                     return@execute
                 }
-                sender.sendMessage("&a${player.name} &7的&a任务列表:")
-                sender.sendMessage("&a${tasks.joinToString(", ")}")
+                sender.sendMessage("&a${player.name} &7的&a任务列表:".colored())
+                sender.sendMessage("&a${tasks.joinToString(", ")}".colored())
             }
         }
     }
@@ -99,36 +100,36 @@ object MainCommands {
                 sender.sendLang("player-only")
                 return@execute
             }
-            sender.sendMessage("&a当前任务列表:")
+            sender.sendMessage("&a当前任务列表:".colored())
             DataLoader.taskMap.forEach { (name, task) ->
-                sender.sendMessage("&a任务名称: &7$name")
+                sender.sendMessage("&a任务名称: &7$name".colored())
                 // 展示所有 countConditions
                 if (task.countConditions.isEmpty()) {
-                    sender.sendMessage("&c暂无计数条件")
+                    sender.sendMessage("&c暂无计数条件".colored())
                 } else {
-                    sender.sendMessage("&a计数条件:")
+                    sender.sendMessage("&a计数条件:".colored())
                     task.countConditions.forEach { (key, cond) ->
                         sender.sendMessage(
                             "&7 - &e$key &8| 类型: &b${cond.type} &8| 条件: &f${
                                 cond.conditions.joinToString(
-                                    " & "
+                                    " && "
                                 )
-                            }"
+                            }".colored()
                         )
                     }
                 }
                 // 展示提交条件
-                sender.sendMessage("&a提交条件: &7${task.submitConditions.joinToString(" & ")}")
+                sender.sendMessage("&a提交条件: &7${task.submitConditions.joinToString(" & ")}".colored())
                 // 展示奖励
-                sender.sendMessage("&a任务奖励: &7${task.rewards.joinToString(", ")}")
+                sender.sendMessage("&a任务奖励: &7${task.rewards.joinToString(", ")}".colored())
                 // 展示进度
                 val taskProgressMap = TaskApi.getPlayerTaskAllProgress(sender.name, name)
                 if (taskProgressMap.isEmpty()) {
-                    sender.sendMessage("&c无进度数据")
+                    sender.sendMessage("&c无进度数据".colored())
                 } else {
-                    sender.sendMessage("&a任务进度:")
+                    sender.sendMessage("&a任务进度:".colored())
                     taskProgressMap.forEach { (progressKey, progress) ->
-                        sender.sendMessage("&7 - &e$progressKey: &b$progress")
+                        sender.sendMessage("&7 - &e$progressKey: &b$progress".colored())
                     }
                 }
                 sender.sendMessage(" ")

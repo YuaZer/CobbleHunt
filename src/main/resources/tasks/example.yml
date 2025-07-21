@@ -9,7 +9,7 @@
     击败20级以上宝可梦:
       type: "beat"
       conditions:
-        - "'%pokemon_level%' >= 20"
+        - "%pokemon_level% >= 20"
   #提交任务所需条件
   submitConditions:
     - "%捕捉闪光阿勃梭鲁% > 3"
