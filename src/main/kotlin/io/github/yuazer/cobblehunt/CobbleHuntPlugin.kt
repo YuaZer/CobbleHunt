@@ -2,7 +2,8 @@ package io.github.yuazer.cobblehunt
 
 import io.github.yuazer.cobblehunt.data.DataLoader
 import io.github.yuazer.cobblehunt.listen.CobbleEventsHandler
-import io.github.yuazer.cobblehunt.listen.FabricEventsHandler
+import io.github.yuazer.cobblehunt.utils.extension.MapExtension.loadFromYaml
+import io.github.yuazer.cobblehunt.utils.extension.MapExtension.saveToYaml
 import taboolib.common.platform.Plugin
 import taboolib.module.configuration.Config
 import taboolib.module.configuration.ConfigFile
@@ -20,8 +21,22 @@ object CobbleHunt : Plugin() {
 
     override fun onEnable() {
         DataLoader.reload()
-        FabricEventsHandler.register()
+        loadData()
         CobbleEventsHandler.register()
         Language.enableFileWatcher = true
+    }
+
+    override fun onDisable() {
+        saveData()
+    }
+
+    fun loadData() {
+        cacheTripleKey.file?.let { DataLoader.taskCountMap.loadFromYaml(it) }
+        cacheStringList.file?.let { DataLoader.playerTaskingMap.loadFromYaml(it) }
+    }
+
+    fun saveData() {
+        cacheTripleKey.file?.let { DataLoader.taskCountMap.saveToYaml(it) }
+        cacheStringList.file?.let { DataLoader.playerTaskingMap.saveToYaml(it) }
     }
 }
