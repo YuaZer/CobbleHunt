@@ -76,6 +76,7 @@ class DoubleKeyMap<A, B, V> : Cloneable {
     fun forEach(action: (A, B, V) -> Unit) {
         backingMap.forEach { (pair, v) -> action(pair.first, pair.second, v) }
     }
+    fun getOrDefault(a: A, b: B, default: V): V = backingMap[Pair(a, b)] ?: default
 
     /** 支持解构，返回 (Pair<A,B>, V) 的序列 */
     operator fun iterator(): Iterator<Map.Entry<Pair<A, B>, V>> = backingMap.entries.iterator()

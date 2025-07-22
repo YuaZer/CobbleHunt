@@ -13,11 +13,18 @@ object CobbleHunt : Plugin() {
     @Config("config.yml")
     lateinit var config: ConfigFile
 
+    @Config("rotateGui.yml")
+    lateinit var rotateGui: ConfigFile
+
     @Config("cacheTripleKey.yml")
     lateinit var cacheTripleKey: ConfigFile
 
     @Config("cacheStringList.yml")
     lateinit var cacheStringList: ConfigFile
+    @Config("cacheGlobal.yml")
+    lateinit var cacheGlobal: ConfigFile
+    @Config("icons.yml")
+    lateinit var icons: ConfigFile
 
     override fun onEnable() {
         DataLoader.reload()

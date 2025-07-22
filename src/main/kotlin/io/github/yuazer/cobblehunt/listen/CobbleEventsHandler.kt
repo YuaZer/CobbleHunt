@@ -42,10 +42,8 @@ object CobbleEventsHandler {
         if (!event.battle.isPvW) return
         playersLoop@ for (serverPlayer in event.battle.players) {
             val player = Bukkit.getPlayer(serverPlayer.uuid)
-            if (player == null) {
-//                println("玩家不存在")
+                ?: //                println("玩家不存在")
                 continue@playersLoop
-            }
             val pokemon = event.killed.originalPokemon
             val pokeOwnerUUID = pokemon.getOwnerUUID()
             // 确认击杀宝可梦不属于该玩家

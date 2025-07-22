@@ -1,0 +1,37 @@
+title: "&a&l当前轮换任务"
+
+layout:
+  - "#########"
+  - "# A B C #"
+  - "# D E F #"
+  - "#########"
+
+Items:
+  '#':
+    material: "STONE"
+    name: "&e&l我只是个装饰~"
+    lore:
+      - "&7我只是装饰哦~"
+#任务轮换配置
+rotate:
+  #槽位ID
+  11:
+    #任务星级
+    star: 1
+    #该星级任务的第几个任务
+    index: 0
+  15:
+    star: 1
+    index: 1
+  20:
+    star: 2
+    index: 0
+  24:
+    star: 2
+    index: 1
+  29:
+    star: 3
+    index: 0
+  33:
+    star: 3
+    index: 1

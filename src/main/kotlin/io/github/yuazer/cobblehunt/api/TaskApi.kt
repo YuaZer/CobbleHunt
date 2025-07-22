@@ -1,6 +1,7 @@
 package io.github.yuazer.cobblehunt.api
 
 import io.github.yuazer.cobblehunt.data.DataLoader
+import io.github.yuazer.cobblehunt.enums.TaskStatus
 import io.github.yuazer.cobblehunt.model.HuntTask
 import io.github.yuazer.cobblehunt.utils.ScriptUtils
 import org.bukkit.Bukkit
@@ -22,6 +23,7 @@ object TaskApi {
         task.countConditions.keys.forEach { progressKey ->
             DataLoader.taskCountMap[player, taskName, progressKey] = 0
         }
+        setTaskStatus(player, taskName, TaskStatus.IN_PROGRESS)
         return true
     }
 
@@ -30,6 +32,8 @@ object TaskApi {
         DataLoader.taskCountMap.keys()
             .filter { it.first == player && it.second == taskName }
             .forEach { (p, t, k) -> DataLoader.taskCountMap.remove(p, t, k) }
+//        setTaskStatus(player, taskName, TaskStatus.NOT_TAKEN)
+        DataLoader.playerTaskStatusMap.remove(player, taskName)
         return removed
     }
 
@@ -59,6 +63,7 @@ object TaskApi {
             if (bukkitPlayer != null) {
                 task.runRewards(bukkitPlayer)
             }
+            setTaskStatus(player, taskName, TaskStatus.COMPLETED)
             removeTask(player, taskName)
             return true
         } else {
@@ -131,5 +136,31 @@ object TaskApi {
             progressKey to (DataLoader.taskCountMap[player, taskName, progressKey] ?: 0)
         }
     }
+    /** 获取玩家指定星级的所有任务对象 */
+    fun getPlayerTasksByStar(player: String, star: Int): List<HuntTask> =
+        DataLoader.playerTaskingMap[player]
+            .mapNotNull { DataLoader.taskMap[it] }
+            .filter { it.star == star }
+
+    /** 获取玩家指定星级的所有任务名 */
+    fun getPlayerTaskNamesByStar(player: String, star: Int): List<String> =
+        DataLoader.playerTaskingMap[player]
+            .filter { DataLoader.taskMap[it]?.star == star }
+    // 查询玩家某任务的状态（默认为 NOT_TAKEN）
+    fun getTaskStatus(player: String, taskName: String): TaskStatus =
+        DataLoader.playerTaskStatusMap[player, taskName] ?: TaskStatus.NOT_TAKEN
+
+    // 设置玩家某任务状态
+    fun setTaskStatus(player: String, taskName: String, status: TaskStatus) {
+        DataLoader.playerTaskStatusMap[player, taskName] = status
+    }
+
+    // 获取玩家所有处于某状态的任务名
+    fun getPlayerTaskNamesByStatus(player: String, status: TaskStatus): List<String> =
+        DataLoader.taskMap.keys.filter { getTaskStatus(player, it) == status }
+
+    // 获取玩家所有处于某状态的任务对象
+    fun getPlayerTasksByStatus(player: String, status: TaskStatus): List<HuntTask> =
+        getPlayerTaskNamesByStatus(player, status).mapNotNull { getTask(it) }
 
 }

@@ -1,5 +1,6 @@
 package io.github.yuazer.cobblehunt.utils.extension
 
+import io.github.yuazer.cobblehunt.model.map.DoubleKeyMap
 import io.github.yuazer.cobblehunt.model.map.StringListMap
 import io.github.yuazer.cobblehunt.model.map.TripleKeyMap
 import taboolib.module.configuration.Configuration
@@ -98,4 +99,7 @@ object MapExtension {
         val list = config.getStringList(key)
         this.set(key, list)
     }
+    /** 针对 value 为 List 的 DoubleKeyMap，获取时自动返回空列表而不是 null */
+    fun <A, B, V> DoubleKeyMap<A, B, List<V>>.getOrEmptyList(a: A, b: B): List<V> =
+        this[a, b] ?: emptyList()
 }

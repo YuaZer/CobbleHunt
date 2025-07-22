@@ -6,7 +6,7 @@ import taboolib.library.configuration.ConfigurationSection
 
 class HuntTask(val configurationSection: ConfigurationSection) {
     val name: String = configurationSection.name
-
+    val star:Int = configurationSection.getInt("star",1)
     /** 奖励支持单行和多行配置 */
     val rewards: List<String> = configurationSection.getStringList("rewards").let {
         it.ifEmpty {

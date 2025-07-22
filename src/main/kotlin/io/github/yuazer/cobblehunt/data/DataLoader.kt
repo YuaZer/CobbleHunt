@@ -1,6 +1,8 @@
 package io.github.yuazer.cobblehunt.data
 
+import io.github.yuazer.cobblehunt.enums.TaskStatus
 import io.github.yuazer.cobblehunt.model.HuntTask
+import io.github.yuazer.cobblehunt.model.map.DoubleKeyMap
 import io.github.yuazer.cobblehunt.model.map.StringListMap
 import io.github.yuazer.cobblehunt.model.map.TripleKeyMap
 import taboolib.common.io.newFolder
@@ -16,6 +18,10 @@ object DataLoader {
     val taskCountMap = TripleKeyMap<String,String,String,Int>()
     // 玩家名,任务名 map(玩家正在进行的任务)
     val playerTaskingMap = StringListMap()
+    // 玩家名,星级,任务List (当前玩家所随机到的任务)
+    val playerStarTaskMap = DoubleKeyMap<String, Int, List<HuntTask>>()
+    // 玩家名,任务名,任务状态 map
+    val playerTaskStatusMap = DoubleKeyMap<String, String, TaskStatus>()
     fun reload(){
         taskMap.clear()
         val file = newFolder(getDataFolder(), "tasks", create = true)

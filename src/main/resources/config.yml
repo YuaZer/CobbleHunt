@@ -1,3 +1,11 @@
 #语言文件
 Lang: "zh_CN"
 
+stateLanguage:
+  task-has: "&a已接取"
+  task-not-has: "&c未接取"
+  task-has-completed: "&a已完成"
+
+rotateOptions:
+  #任务轮换时间(分钟)
+  time: 480
