@@ -8,7 +8,7 @@ layout:
 
 Items:
   '#':
-    material: "STONE"
+    material: "LANTERN"
     name: "&e&l我只是个装饰~"
     lore:
       - "&7我只是装饰哦~"
