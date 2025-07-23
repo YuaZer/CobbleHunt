@@ -8,6 +8,7 @@
       type: "capture"
       conditions:
         - "'%pokemon_shiny%' == 'true'"
+        - "'%pokemon_name%' == 'Absol'"
     击败20级以上宝可梦:
       type: "beat"
       conditions:
@@ -18,4 +19,4 @@
     - "%击败20级以上宝可梦% >= 3"
   #任务奖励
   rewards: |-
-    command inline "minecraft:give {{ sender }} DIAMOND 1" as op
+    command inline "give {{ sender }} DIAMOND 1" as op

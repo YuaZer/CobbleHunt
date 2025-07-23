@@ -1,0 +1,102 @@
+捕捉基础训练家:
+  star: 1
+  countConditions:
+    捕捉任意闪光宝可梦:
+      type: "capture"
+      conditions:
+        - "'%pokemon_shiny%' == 'true'"
+    捕捉草系宝可梦:
+      type: "capture"
+      conditions:
+        - "'%pokemon_type_1%' == 'Grass' or %pokemon_type_2% == 'Grass'"
+  submitConditions:
+    - "%捕捉任意闪光宝可梦% >= 1"
+    - "%捕捉草系宝可梦% >= 2"
+  rewards: |-
+    command inline "give {{ sender }} LEAF_STONE 1" as op
+击败初级挑战:
+  star: 1
+  countConditions:
+    击败水系宝可梦:
+      type: "beat"
+      conditions:
+        - "'%pokemon_type_1%' == 'Water' or %pokemon_type_2% == 'Water'"
+    击败10级以上宝可梦:
+      type: "beat"
+      conditions:
+        - "%pokemon_level% >= 10"
+  submitConditions:
+    - "%击败水系宝可梦% >= 2"
+    - "%击败10级以上宝可梦% >= 3"
+  rewards: |-
+    command inline "give {{ sender }} WATER_STONE 1" as op
+IV猎人:
+  star: 2
+  countConditions:
+    捕捉高攻击IV宝可梦:
+      type: "capture"
+      conditions:
+        - "%pokemon_ivs_attack% >= 25"
+    捕捉总IV大于120宝可梦:
+      type: "capture"
+      conditions:
+        - "%pokemon_ivs_total% > 120"
+  submitConditions:
+    - "%捕捉高攻击IV宝可梦% >= 1"
+    - "%捕捉总IV大于120宝可梦% >= 1"
+  rewards: |-
+    command inline "give {{ sender }} RARE_CANDY 2" as op
+闪耀挑战者:
+  star: 2
+  countConditions:
+    捕捉闪光伊布:
+      type: "capture"
+      conditions:
+        - "'%pokemon_shiny%' == 'true'"
+        - "'%pokemon_name%' == 'Eevee'"
+    击败电系宝可梦:
+      type: "beat"
+      conditions:
+        - "'%pokemon_type_1%' == 'Electric' || %pokemon_type_2% == 'Electric'"
+  submitConditions:
+    - "%捕捉闪光伊布% >= 1"
+    - "%击败电系宝可梦% >= 2"
+  rewards: |-
+    command inline "give {{ sender }} THUNDER_STONE 1" as op
+极限训练家:
+  star: 3
+  countConditions:
+    捕捉90级以上宝可梦:
+      type: "capture"
+      conditions:
+        - "%pokemon_level% >= 90"
+    捕捉努力值满分宝可梦:
+      type: "capture"
+      conditions:
+        - "%pokemon_evs_total% >= 510"
+  submitConditions:
+    - "%捕捉90级以上宝可梦% >= 1"
+    - "%捕捉努力值满分宝可梦% >= 1"
+  rewards: |-
+    command inline "give {{ sender }} MASTER_BALL 1" as op
+超级击败王:
+  star: 3
+  countConditions:
+    击败闪光宝可梦:
+      type: "beat"
+      conditions:
+        - "'%pokemon_shiny%' == 'true'"
+    击败30级以上宝可梦:
+      type: "beat"
+      conditions:
+        - "%pokemon_level% >= 30"
+    击败总IV大于140宝可梦:
+      type: "beat"
+      conditions:
+        - "%pokemon_ivs_total% > 140"
+  submitConditions:
+    - "%击败闪光宝可梦% >= 2"
+    - "%击败30级以上宝可梦% >= 2"
+    - "%击败总IV大于140宝可梦% >= 1"
+  rewards: |-
+    command inline "give {{ sender }} GOLDEN_APPLE 1" as op

@@ -14,3 +14,5 @@ task-completed: "&a任务已完成!"
 eval-not-pass: "&c任务条件未通过!"
 task-not-completed: "&c任务未完成!"
 
+rotate-clear-tasks: "&a任务轮换已清空!"
+rotate-force-clear-tasks: "&a任务轮换已清空(强制)!"

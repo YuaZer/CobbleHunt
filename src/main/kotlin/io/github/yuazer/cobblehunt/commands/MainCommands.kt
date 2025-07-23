@@ -3,6 +3,7 @@ package io.github.yuazer.cobblehunt.commands
 import io.github.yuazer.cobblehunt.CobbleHunt
 import io.github.yuazer.cobblehunt.api.TaskApi
 import io.github.yuazer.cobblehunt.data.DataLoader
+import io.github.yuazer.cobblehunt.gui.RotateGui
 import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
 import taboolib.common.platform.command.*
@@ -18,7 +19,10 @@ object MainCommands {
     val reload = subCommand {
         execute<CommandSender> { sender, context, argument ->
             CobbleHunt.config.reload()
+            CobbleHunt.rotateGui.reload()
+            CobbleHunt.icons.reload()
             DataLoader.reload()
+            CobbleHunt.playerRotateManager.rotateMinutes = CobbleHunt.config.getInt("rotateOptions.time", 480)
             //重载语言文件
             Language.reload()
             sender.sendLang("reload-message")
@@ -147,10 +151,54 @@ object MainCommands {
                 val taskName = context["taskName"]
                 if (!TaskApi.submitTask(sender.name, taskName)) {
                     sender.sendLang("task-not-completed")
-                }else {
+                } else {
                     sender.sendLang("task-completed")
                 }
             }
+        }
+    }
+
+    @CommandBody(aliases = ["rotate"], permission = "cobblehunt.rotate")
+    val rotate = subCommand {
+        execute<CommandSender> { sender, context, argument ->
+            if (sender !is Player) {
+                sender.sendLang("player-only")
+                return@execute
+            }
+            val rotateGui = RotateGui(sender)
+            rotateGui.openMenu()
+        }
+    }
+
+    @CommandBody(aliases = ["trotate"], permission = "cobblehunt.tryRotate")
+    val tryRotate = subCommand {
+        execute<CommandSender> { sender, context, argument ->
+            if (sender !is Player) {
+                sender.sendLang("player-only")
+                return@execute
+            }
+            CobbleHunt.playerRotateManager.tryRotate(sender)
+        }
+    }
+
+    @CommandBody(aliases = ["rotateForce"], permission = "cobblehunt.rotateForce")
+    val rotateForce = subCommand {
+        player("player") {
+            suggestion<CommandSender>(uncheck = false) { _, _ ->
+                onlinePlayers.map { it.name }
+            }
+            execute<CommandSender> { sender, context, argument ->
+                val player = context.player("player")
+                val bukkitPlayer = player.castSafely<Player>()?:return@execute
+                CobbleHunt.playerRotateManager.forceRotate(bukkitPlayer)
+            }
+        }
+        execute<CommandSender> { sender, context, argument ->
+            if (sender !is Player) {
+                sender.sendLang("player-only")
+                return@execute
+            }
+            CobbleHunt.playerRotateManager.forceRotate(sender)
         }
     }
 }

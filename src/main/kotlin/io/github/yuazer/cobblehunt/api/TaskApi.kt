@@ -33,7 +33,7 @@ object TaskApi {
             .filter { it.first == player && it.second == taskName }
             .forEach { (p, t, k) -> DataLoader.taskCountMap.remove(p, t, k) }
 //        setTaskStatus(player, taskName, TaskStatus.NOT_TAKEN)
-        DataLoader.playerTaskStatusMap.remove(player, taskName)
+//        DataLoader.playerTaskStatusMap.remove(player, taskName)
         return removed
     }
 
@@ -117,6 +117,10 @@ object TaskApi {
         DataLoader.taskCountMap.keys()
             .filter { it.first == player }
             .forEach { (p, t, k) -> DataLoader.taskCountMap.remove(p, t, k) }
+        // 这里移除所有任务状态
+        DataLoader.playerTaskStatusMap.keys()
+            .filter { it.first == player }
+            .forEach { (p, t) -> DataLoader.playerTaskStatusMap.remove(p, t) }
     }
 
     fun getAllPlayersTasks(): Map<String, List<String>> =

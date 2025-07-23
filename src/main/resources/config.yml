@@ -9,3 +9,8 @@ stateLanguage:
 rotateOptions:
   #任务轮换时间(分钟)
   time: 480
+  tasks:
+    #星级: 数量
+    1: 2
+    2: 2
+    3: 2

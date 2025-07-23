@@ -20,18 +20,18 @@ rotate:
     star: 1
     #该星级任务的第几个任务
     index: 0
-  15:
+  13:
     star: 1
     index: 1
+  15:
+    star: 2
+    index: 0
   20:
     star: 2
-    index: 0
-  24:
-    star: 2
     index: 1
-  29:
+  22:
     star: 3
     index: 0
-  33:
+  24:
     star: 3
     index: 1

@@ -18,8 +18,7 @@ object DataLoader {
     val taskCountMap = TripleKeyMap<String,String,String,Int>()
     // 玩家名,任务名 map(玩家正在进行的任务)
     val playerTaskingMap = StringListMap()
-    // 玩家名,星级,任务List (当前玩家所随机到的任务)
-    val playerStarTaskMap = DoubleKeyMap<String, Int, List<HuntTask>>()
+
     // 玩家名,任务名,任务状态 map
     val playerTaskStatusMap = DoubleKeyMap<String, String, TaskStatus>()
     fun reload(){
