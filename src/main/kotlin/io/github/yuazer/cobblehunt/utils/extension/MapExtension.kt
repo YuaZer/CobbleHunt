@@ -1,5 +1,6 @@
 package io.github.yuazer.cobblehunt.utils.extension
 
+import io.github.yuazer.cobblehunt.enums.TaskStatus
 import io.github.yuazer.cobblehunt.model.map.DoubleKeyMap
 import io.github.yuazer.cobblehunt.model.map.StringListMap
 import io.github.yuazer.cobblehunt.model.map.TripleKeyMap
@@ -17,6 +18,7 @@ object MapExtension {
         }
         config.saveToFile(file)
     }
+
     fun TripleKeyMap<String, String, String, Int>.savePlayerToYaml(player: String, file: File) {
         val config = Configuration.empty(Type.YAML)
         this.keys()
@@ -27,6 +29,7 @@ object MapExtension {
             }
         config.saveToFile(file)
     }
+
     // 从YML读取
     fun TripleKeyMap<String, String, String, Int>.loadFromYaml(file: File) {
         val config = Configuration.loadFromFile(file, Type.YAML)
@@ -42,6 +45,7 @@ object MapExtension {
             }
         }
     }
+
     fun TripleKeyMap<String, String, String, Int>.loadPlayerFromYaml(player: String, file: File) {
         val config = Configuration.loadFromFile(file, Type.YAML)
         val secA = config.getConfigurationSection(player) ?: return
@@ -58,6 +62,7 @@ object MapExtension {
             }
         }
     }
+
     /**
      * 保存全部数据到 YAML 文件
      */
@@ -99,7 +104,61 @@ object MapExtension {
         val list = config.getStringList(key)
         this.set(key, list)
     }
+
     /** 针对 value 为 List 的 DoubleKeyMap，获取时自动返回空列表而不是 null */
     fun <A, B, V> DoubleKeyMap<A, B, List<V>>.getOrEmptyList(a: A, b: B): List<V> =
         this[a, b] ?: emptyList()
+
+
+    fun DoubleKeyMap<String, String, TaskStatus>.saveToYaml(file: File) {
+        val config = Configuration.loadFromFile(file, Type.YAML)
+        this.keys().forEach { (a, b) ->
+            val path = "$a.$b"
+            val status = this[a, b]
+            config[path] = status?.name // 存为字符串
+        }
+        config.saveToFile(file)
+    }
+
+    fun DoubleKeyMap<String, String, TaskStatus>.loadFromYaml(file: File) {
+        val config = Configuration.loadFromFile(file, Type.YAML)
+        this.clear()
+        for (a in config.getKeys(false)) {
+            val secA = config.getConfigurationSection(a) ?: continue
+            for (b in secA.getKeys(false)) {
+                val statusName = secA.getString(b)
+                val status = runCatching { TaskStatus.valueOf(statusName ?: "") }.getOrNull()
+                if (status != null) {
+                    this[a, b] = status
+                }
+            }
+        }
+    }
+
+
+    fun DoubleKeyMap<String, String, TaskStatus>.saveKeyToYaml(player: String, file: File) {
+        val config = Configuration.loadFromFile(file, Type.YAML)
+        this.keys().filter { it.first == player }.forEach { (a, b) ->
+            val path = "$a.$b"
+            val status = this[a, b]
+            config[path] = status?.name
+        }
+        config.saveToFile(file)
+    }
+
+    fun DoubleKeyMap<String, String, TaskStatus>.loadKeyFromYaml(player: String, file: File) {
+        val config = Configuration.loadFromFile(file, Type.YAML)
+        val secA = config.getConfigurationSection(player) ?: return
+        // 清理该玩家历史
+        this.keys().filter { it.first == player }.forEach { (a, b) -> this.remove(a, b) }
+        for (b in secA.getKeys(false)) {
+            val statusName = secA.getString(b)
+            val status = runCatching { TaskStatus.valueOf(statusName ?: "") }.getOrNull()
+            if (status != null) {
+                this[player, b] = status
+            }
+        }
+    }
+
+
 }

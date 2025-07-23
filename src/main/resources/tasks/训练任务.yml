@@ -8,7 +8,7 @@
     捕捉草系宝可梦:
       type: "capture"
       conditions:
-        - "'%pokemon_type_1%' == 'Grass' or %pokemon_type_2% == 'Grass'"
+        - "'%pokemon_type_1%' == 'grass'"
   submitConditions:
     - "%捕捉任意闪光宝可梦% >= 1"
     - "%捕捉草系宝可梦% >= 2"
@@ -20,7 +20,7 @@
     击败水系宝可梦:
       type: "beat"
       conditions:
-        - "'%pokemon_type_1%' == 'Water' or %pokemon_type_2% == 'Water'"
+        - "'%pokemon_type_1%' == 'water'"
     击败10级以上宝可梦:
       type: "beat"
       conditions:
@@ -57,7 +57,7 @@ IV猎人:
     击败电系宝可梦:
       type: "beat"
       conditions:
-        - "'%pokemon_type_1%' == 'Electric' || %pokemon_type_2% == 'Electric'"
+        - "'%pokemon_type_1%' == 'electric'"
   submitConditions:
     - "%捕捉闪光伊布% >= 1"
     - "%击败电系宝可梦% >= 2"

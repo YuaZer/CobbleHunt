@@ -20,6 +20,9 @@ object PlayerEvents {
         CobbleHunt.cacheStringList.file?.let {
             DataLoader.playerTaskingMap.loadKeyFromYaml(player.name, it)
         }
+        CobbleHunt.cacheDoubleKey.file?.let {
+            DataLoader.playerTaskStatusMap.loadKeyFromYaml(player.name, it)
+        }
     }
 
     @SubscribeEvent
@@ -30,6 +33,9 @@ object PlayerEvents {
         }
         CobbleHunt.cacheStringList.file?.let {
             DataLoader.playerTaskingMap.saveKeyToYaml(player.name, it)
+        }
+        CobbleHunt.cacheDoubleKey.file?.let {
+            DataLoader.playerTaskStatusMap.saveKeyToYaml(player.name, it)
         }
     }
 }

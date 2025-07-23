@@ -157,6 +157,7 @@ object TaskApi {
     // 设置玩家某任务状态
     fun setTaskStatus(player: String, taskName: String, status: TaskStatus) {
         DataLoader.playerTaskStatusMap[player, taskName] = status
+        println("玩家$player 的任务 $taskName 状态已设置为 ${status.inChinese()}")
     }
 
     // 获取玩家所有处于某状态的任务名

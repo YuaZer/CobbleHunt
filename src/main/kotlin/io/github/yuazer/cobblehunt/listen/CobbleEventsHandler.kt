@@ -25,7 +25,7 @@ object CobbleEventsHandler {
             val task = TaskApi.getTask(taskName) ?: continue
             // 遍历所有 countConditions，type 必须是 "capture"
             for ((progressKey, countCondition) in task.countConditions) {
-                if (countCondition.type != "capture") continue
+                if (countCondition.type != TaskApi.CAPTURE_PROGRESS_PREFIX_KEY) continue
                 if (countCondition.conditions.isEmpty() ||
                     ScriptUtils.evalListToBoolean(
                         countCondition.conditions,
@@ -56,7 +56,7 @@ object CobbleEventsHandler {
                 val task = TaskApi.getTask(taskName) ?: continue
                 // 遍历所有 countConditions，type 必须是 "beat"
                 for ((progressKey, countCondition) in task.countConditions) {
-                    if (countCondition.type != "beat") continue
+                    if (countCondition.type != TaskApi.BEAT_PROGRESS_PREFIX_KEY) continue
                     if (countCondition.conditions.isEmpty() ||
                         ScriptUtils.evalListToBoolean(
                             countCondition.conditions,

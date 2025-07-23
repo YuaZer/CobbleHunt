@@ -26,6 +26,7 @@ class PlayerRotateManager(
             rotateTask(player)
             true
         } else {
+            player.sendLang("time-not-to-rotate")
             false // 还未到轮换时间
         }
     }
@@ -55,10 +56,11 @@ class PlayerRotateManager(
 
     // 清除未完成任务
     private fun removeIncompleteTasks(player: Player) {
-        val unfinished = TaskApi.getPlayerTaskNamesByStatus(player.name, TaskStatus.IN_PROGRESS)
-        unfinished.forEach { _ ->
-            TaskApi.clearPlayerTasks(player.name)
-        }
+//        val unfinished = TaskApi.getPlayerTaskNamesByStatus(player.name, TaskStatus.IN_PROGRESS)
+//        unfinished.forEach { _ ->
+//            TaskApi.clearPlayerTasks(player.name)
+//        }
+        TaskApi.clearPlayerTasks(player.name)
         player.sendLang("rotate-clear-tasks")
     }
 

@@ -23,6 +23,9 @@ object CobbleHunt : Plugin() {
 
     @Config("cacheStringList.yml")
     lateinit var cacheStringList: ConfigFile
+    @Config("cacheDoubleKey.yml")
+    lateinit var cacheDoubleKey: ConfigFile
+
     @Config("player_rotate_time.yml")
     lateinit var player_rotate_time: ConfigFile
     @Config("icons.yml")
@@ -44,12 +47,14 @@ object CobbleHunt : Plugin() {
     fun loadData() {
         cacheTripleKey.file?.let { DataLoader.taskCountMap.loadFromYaml(it) }
         cacheStringList.file?.let { DataLoader.playerTaskingMap.loadFromYaml(it) }
+        cacheDoubleKey.file?.let { DataLoader.playerTaskStatusMap.loadFromYaml(it) }
         PlayerRotateData.load()
     }
 
     fun saveData() {
         cacheTripleKey.file?.let { DataLoader.taskCountMap.saveToYaml(it) }
         cacheStringList.file?.let { DataLoader.playerTaskingMap.saveToYaml(it) }
+        cacheDoubleKey.file?.let { DataLoader.playerTaskStatusMap.saveToYaml(it) }
         PlayerRotateData.save()
     }
 }
