@@ -69,4 +69,29 @@ object CobbleEventsHandler {
             }
         }
     }
+//    fun onBattleInstruction(event: BattleInstructionEvent) {
+//        event.battle.players.forEach { serverPlayer ->
+//            val player = Bukkit.getPlayer(serverPlayer.uuid) ?: return
+//            val tasks = TaskApi.getPlayerTasks(player.name)
+//            val pokemon = event.battle.activePokemon.first {
+//                val uuid = it.battlePokemon?.originalPokemon?.getOwnerUUID()
+//                if (uuid == null) return@forEach
+//                else uuid.toString() == player.uniqueId.toString()
+//            }.battlePokemon?.originalPokemon ?: return
+//            for (taskName in tasks) {
+//                val task = TaskApi.getTask(taskName) ?: continue
+//                for ((progressKey, countCondition) in task.countConditions) {
+//                    if (countCondition.type != TaskApi.BATTLE_INSTRUCTION_SELF_PREFIX_KEY) continue
+//                    if (countCondition.conditions.isEmpty() ||
+//                        ScriptUtils.evalListToBoolean(
+//                            countCondition.conditions,
+//                            pokemon
+//                        )
+//                    ) {
+//                        TaskApi.addTaskProgress(player.name, taskName, progressKey)
+//                    }
+//                }
+//            }
+//        }
+//    }
 }

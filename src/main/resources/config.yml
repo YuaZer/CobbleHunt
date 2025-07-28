@@ -9,8 +9,9 @@ stateLanguage:
 rotateOptions:
   #任务轮换时间(分钟)
   time: 480
+  #轮换的时候给玩家几个任务
   tasks:
-    #星级: 数量
+    #星级: 数量(1星任务抽2个)
     1: 2
     2: 2
     3: 2

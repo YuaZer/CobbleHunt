@@ -11,6 +11,8 @@ object TaskApi {
     const val DEFAULT_PROGRESS_KEY = "default"
     const val CAPTURE_PROGRESS_PREFIX_KEY = "capture"
     const val BEAT_PROGRESS_PREFIX_KEY = "beat"
+    const val BATTLE_INSTRUCTION_SELF_PREFIX_KEY = "battleInstructionSelf"
+    const val BATTLE_INSTRUCTION_OTHER_PREFIX_KEY = "battleInstructionOther"
 
     /**
      * 添加任务：初始化所有进度
