@@ -2,7 +2,10 @@ package io.github.yuazer.cobblehunt.listen
 
 import com.cobblemon.mod.common.api.events.CobblemonEvents
 import com.cobblemon.mod.common.api.events.battles.BattleFaintedEvent
+import com.cobblemon.mod.common.api.events.pokemon.LevelUpEvent
 import com.cobblemon.mod.common.api.events.pokemon.PokemonCapturedEvent
+import com.cobblemon.mod.common.api.events.pokemon.evolution.EvolutionAcceptedEvent
+import com.cobblemon.mod.common.api.events.pokemon.evolution.EvolutionCompleteEvent
 import io.github.yuazer.cobblehunt.api.TaskApi
 import io.github.yuazer.cobblehunt.utils.ScriptUtils
 import org.bukkit.Bukkit
@@ -14,6 +17,15 @@ object CobbleEventsHandler {
         }
         CobblemonEvents.POKEMON_CAPTURED.subscribe { event ->
             onCapture(event)
+        }
+        CobblemonEvents.LEVEL_UP_EVENT.subscribe { event ->
+            onLevelUp(event)
+        }
+        CobblemonEvents.EVOLUTION_COMPLETE.subscribe { event ->
+            onEvolvePost(event)
+        }
+        CobblemonEvents.EVOLUTION_ACCEPTED.subscribe { event ->
+            onEvolvePre(event)
         }
     }
 
@@ -65,6 +77,69 @@ object CobbleEventsHandler {
                     ) {
                         TaskApi.addTaskProgress(player.name, taskName, progressKey)
                     }
+                }
+            }
+        }
+    }
+
+    fun onLevelUp(event: LevelUpEvent) {
+        val pokemon = event.pokemon
+        val player = Bukkit.getPlayer(pokemon.getOwnerUUID() ?: return) ?: return
+        val tasks = TaskApi.getPlayerTasks(player.name)
+        for (taskName in tasks) {
+            val task = TaskApi.getTask(taskName) ?: continue
+            // 遍历所有 countConditions，type 必须是 "capture"
+            for ((progressKey, countCondition) in task.countConditions) {
+                if (countCondition.type != TaskApi.LEVEL_UP_PROGRESS_PREFIX_KEY) continue
+                if (countCondition.conditions.isEmpty() ||
+                    ScriptUtils.evalListToBoolean(
+                        countCondition.conditions,
+                        pokemon
+                    )
+                ) {
+                    TaskApi.addTaskProgress(player.name, taskName, progressKey)
+                }
+            }
+        }
+    }
+
+    fun onEvolvePost(event: EvolutionCompleteEvent) {
+        val pokemon = event.pokemon
+        val player = Bukkit.getPlayer(pokemon.getOwnerUUID() ?: return) ?: return
+        val tasks = TaskApi.getPlayerTasks(player.name)
+        for (taskName in tasks) {
+            val task = TaskApi.getTask(taskName) ?: continue
+            // 遍历所有 countConditions，type 必须是 "capture"
+            for ((progressKey, countCondition) in task.countConditions) {
+                if (countCondition.type != TaskApi.EVOLVE_POST_PROGRESS_PREFIX_KEY) continue
+                if (countCondition.conditions.isEmpty() ||
+                    ScriptUtils.evalListToBoolean(
+                        countCondition.conditions,
+                        pokemon
+                    )
+                ) {
+                    TaskApi.addTaskProgress(player.name, taskName, progressKey)
+                }
+            }
+        }
+    }
+
+    fun onEvolvePre(event: EvolutionAcceptedEvent) {
+        val pokemon = event.pokemon
+        val player = Bukkit.getPlayer(pokemon.getOwnerUUID() ?: return) ?: return
+        val tasks = TaskApi.getPlayerTasks(player.name)
+        for (taskName in tasks) {
+            val task = TaskApi.getTask(taskName) ?: continue
+            // 遍历所有 countConditions，type 必须是 "capture"
+            for ((progressKey, countCondition) in task.countConditions) {
+                if (countCondition.type != TaskApi.EVOLVE_PRE_PROGRESS_PREFIX_KEY) continue
+                if (countCondition.conditions.isEmpty() ||
+                    ScriptUtils.evalListToBoolean(
+                        countCondition.conditions,
+                        pokemon
+                    )
+                ) {
+                    TaskApi.addTaskProgress(player.name, taskName, progressKey)
                 }
             }
         }
