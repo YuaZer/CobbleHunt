@@ -6,10 +6,13 @@ import io.github.yuazer.cobblehunt.listen.CobbleEventsHandler
 import io.github.yuazer.cobblehunt.runnable.PlayerRotateManager
 import io.github.yuazer.cobblehunt.utils.extension.MapExtension.loadFromYaml
 import io.github.yuazer.cobblehunt.utils.extension.MapExtension.saveToYaml
+import taboolib.common.platform.Platform
 import taboolib.common.platform.Plugin
+import taboolib.common.platform.function.pluginVersion
 import taboolib.module.configuration.Config
 import taboolib.module.configuration.ConfigFile
 import taboolib.module.lang.Language
+import taboolib.module.metrics.Metrics
 
 object CobbleHunt : Plugin() {
     @Config("config.yml")
@@ -38,6 +41,7 @@ object CobbleHunt : Plugin() {
         CobbleEventsHandler.register()
         playerRotateManager.startAutoRotateTask()
         Language.enableFileWatcher = true
+        val metrics = Metrics(26858, pluginVersion, Platform.BUKKIT)
     }
 
     override fun onDisable() {
