@@ -7,6 +7,31 @@ stateLanguage:
   task-has-completed: "&a已完成"
 
 rotateOptions:
+  enabled: true
+  # 轮换前是否清空任务
+  clearOnRotate: true
+  # 为 true 时，仅清除进行中的任务
+  clearOnlyInProgress: true
+  # 为 true 时，仅补足每个星级的目标数量
+  fillMissingOnly: true
+  # 为 false 时，已完成任务不会再次加入
+  allowRepeatCompleted: true
+  auto:
+    enabled: true
+    # 自动检查间隔（秒）
+    checkIntervalSeconds: 60
+    # 玩家没有记录时是否立即轮换
+    rotateIfNoRecord: true
+    # 自动轮换时是否发送提示
+    notify: false
+  onJoin:
+    enabled: true
+    # 仅在玩家没有任务时触发
+    onlyIfNoTasks: true
+    # 仅在玩家没有轮换记录时触发
+    onlyIfNoRecord: true
+    # 进服轮换时是否发送提示
+    notify: false
   #任务轮换时间(分钟)
   time: 480
   #轮换的时候给玩家几个任务

@@ -24,6 +24,56 @@ class RotateGui(val player: Player) {
         return CobbleHunt.rotateGui.getConfigurationSection("Items")?.getKeys(false) ?: mutableSetOf()
     }
 
+    private fun getRotateByStarSlots(): Map<Int, List<Int>>? {
+        val section = CobbleHunt.rotateGui.getConfigurationSection("rotateByStar") ?: return null
+        val result = mutableMapOf<Int, List<Int>>()
+        section.getKeys(false).forEach { starKey ->
+            val star = starKey.toIntOrNull() ?: return@forEach
+            val slots = CobbleHunt.rotateGui.getStringList("rotateByStar.$starKey.slots")
+                .mapNotNull { it.toIntOrNull() }
+            if (slots.isNotEmpty()) {
+                result[star] = slots
+            }
+        }
+        return result.takeIf { it.isNotEmpty() }
+    }
+
+    private fun resolveSlotInfo(slot: Int): Pair<Int, Int>? {
+        val byStar = getRotateByStarSlots()
+        if (byStar != null) {
+            byStar.forEach { (star, slots) ->
+                val index = slots.indexOf(slot)
+                if (index >= 0) {
+                    return star to index
+                }
+            }
+        }
+        val star = CobbleHunt.rotateGui.getInt("rotate.$slot.star", -1)
+        if (star <= 0) return null
+        val index = CobbleHunt.rotateGui.getInt("rotate.$slot.index", 0)
+        return star to index
+    }
+
+    private fun getRotateSlots(): Set<Int> {
+        val byStar = getRotateByStarSlots()
+        if (byStar != null) {
+            return byStar.values.flatten().toSet()
+        }
+        return CobbleHunt.rotateGui.getConfigurationSection("rotate")?.getKeys(false)
+            ?.mapNotNull { it.toIntOrNull() }
+            ?.toSet()
+            ?: emptySet()
+    }
+
+    private fun getOrderedTaskNamesByStar(star: Int): List<String> {
+        val order = CobbleHunt.rotateGui.getString("taskOrder", "NAME")?.uppercase() ?: "NAME"
+        val tasks = TaskApi.getPlayerTaskNamesByStar(player.name, star)
+        return when (order) {
+            "NONE" -> tasks
+            else -> tasks.sorted()
+        }
+    }
+
     fun openMenu() {
         player.openMenu<ChestImpl>(getTitle()) {
             map(
@@ -40,16 +90,16 @@ class RotateGui(val player: Player) {
                         colored()
                     })
             }
-            //遍历轮换任务,布置界面
-            val rotateTaskKeys = CobbleHunt.rotateGui.getConfigurationSection("rotate")?.getKeys(false) ?: return
-            rotateTaskKeys.forEach { slot ->
-                val star = CobbleHunt.rotateGui.getInt("rotate.${slot}.star")
-                val index = CobbleHunt.rotateGui.getInt("rotate.${slot}.index")
-                val taskNames = TaskApi.getPlayerTaskNamesByStar(player.name, star)
+            //éåŽ†è½®æ¢ä»»åŠ¡,å¸ƒç½®ç•Œé¢
+            getRotateSlots().forEach { slot ->
+                val slotInfo = resolveSlotInfo(slot) ?: return@forEach
+                val star = slotInfo.first
+                val index = slotInfo.second
+                val taskNames = getOrderedTaskNamesByStar(star)
                 val taskName = if (index < taskNames.size) taskNames[index] else null
 
                 if (taskName == null) {
-                    // 无任务时用 default
+                    // æ— ä»»åŠ¡æ—¶ç”?default
                     val itemIcon = buildItem(
                         XMaterial.matchXMaterial(
                             Material.getMaterial(
@@ -61,7 +111,7 @@ class RotateGui(val player: Player) {
                         lore.addAll(CobbleHunt.icons.getStringList("default.lore"))
                         colored()
                     }
-                    set(slot.toInt(), itemIcon)
+                    set(slot, itemIcon)
                     return@forEach
                 }
 
@@ -86,18 +136,19 @@ class RotateGui(val player: Player) {
                     lore.addAll(replacedLore)
                     colored()
                 }
-                set(slot.toInt(), itemIcon)
+                set(slot, itemIcon)
             }
             onClick(true) { event ->
                 val slot = event.rawSlot
-                val star = CobbleHunt.rotateGui.getInt("rotate.${slot}.star")
-                val index = CobbleHunt.rotateGui.getInt("rotate.${slot}.index")
-                val taskNames = TaskApi.getPlayerTaskNamesByStar(player.name, star)
+                val slotInfo = resolveSlotInfo(slot) ?: return@onClick
+                val star = slotInfo.first
+                val index = slotInfo.second
+                val taskNames = getOrderedTaskNamesByStar(star)
                 val taskName = if (index < taskNames.size) taskNames[index] else null
                 if (taskName == null) {
                     return@onClick
                 }
-                //提交任务
+                //æäº¤ä»»åŠ¡
                 if (!TaskApi.submitTask(player.name, taskName)) {
                     player.sendLang("task-not-completed")
                 } else {

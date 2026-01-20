@@ -23,6 +23,7 @@ object PlayerEvents {
         CobbleHunt.cacheDoubleKey.file?.let {
             DataLoader.playerTaskStatusMap.loadKeyFromYaml(player.name, it)
         }
+        CobbleHunt.playerRotateManager.handlePlayerJoin(player)
     }
 
     @SubscribeEvent

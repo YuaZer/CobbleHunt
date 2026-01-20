@@ -22,7 +22,7 @@ object MainCommands {
             CobbleHunt.rotateGui.reload()
             CobbleHunt.icons.reload()
             DataLoader.reload()
-            CobbleHunt.playerRotateManager.rotateMinutes = CobbleHunt.config.getInt("rotateOptions.time", 480)
+            CobbleHunt.playerRotateManager.reloadOptions()
             //重载语言文件
             Language.reload()
             sender.sendLang("reload-message")

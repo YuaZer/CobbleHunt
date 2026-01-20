@@ -6,7 +6,7 @@ plugins {
     java
     kotlin("jvm") version "2.2.0"
     id("fabric-loom") version "1.9.1"
-    id("io.izzel.taboolib") version "2.0.23"
+    id("io.izzel.taboolib") version "2.0.28"
     id("maven-publish")
 }
 
@@ -70,7 +70,7 @@ taboolib {
 //            name("packetevents").optional(true)
         }
     }
-    version { taboolib = "6.2.3"
+    version { taboolib = "6.2.4-65252583"
         isSkipKotlinRelocate = true
         isSkipKotlin = true
     }
@@ -92,7 +92,7 @@ dependencies {
 
     modImplementation("net.fabricmc.fabric-api:fabric-api:${project.property("fabric_version")}")
 
-    modCompileOnly("com.cobblemon:fabric:1.6.1+1.21.1")
+    modCompileOnly("com.cobblemon:fabric:1.7.1+1.21.1")
 
     compileOnly("ink.ptms.core:v12101:12101:mapped")
     compileOnly("ink.ptms.core:v12101:12101:universal")

@@ -1,5 +1,7 @@
 title: "&a&l当前轮换任务"
 
+taskOrder: "NAME" # 任务排序方式：NAME 为按任务名排序，NONE 为保持原顺序
+
 layout:
   - "#########"
   - "# A B C #"
@@ -35,3 +37,16 @@ rotate:
   24:
     star: 3
     index: 1
+rotateByStar:
+  1:
+    slots:
+      - "11"
+      - "13"
+  2:
+    slots:
+      - "15"
+      - "20"
+  3:
+    slots:
+      - "22"
+      - "24"

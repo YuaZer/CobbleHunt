@@ -5,6 +5,7 @@ import io.github.yuazer.cobblehunt.enums.TaskStatus
 import io.github.yuazer.cobblehunt.model.HuntTask
 import io.github.yuazer.cobblehunt.utils.ScriptUtils
 import org.bukkit.Bukkit
+import taboolib.platform.compat.replacePlaceholder
 
 object TaskApi {
 
@@ -14,6 +15,11 @@ object TaskApi {
     const val EVOLVE_PRE_PROGRESS_PREFIX_KEY = "evolve-pre"
     const val EVOLVE_POST_PROGRESS_PREFIX_KEY = "evolve-post"
     const val LEVEL_UP_PROGRESS_PREFIX_KEY = "levelup"
+    const val FAINT_PROGRESS_PREFIX_KEY = "faint"
+    const val HEAL_PROGRESS_PREFIX_KEY = "heal"
+    const val SENT_PROGRESS_PREFIX_KEY = "sent"
+    const val RECALL_PROGRESS_PREFIX_KEY = "recall"
+    const val RELEASE_PROGRESS_PREFIX_KEY = "release"
 
     /**
      * 添加任务：初始化所有进度
@@ -60,9 +66,13 @@ object TaskApi {
         // 构建变量map，形如 "%捕捉闪光阿勃梭鲁%" -> 进度
         val progressMap = getPlayerTaskAllProgress(player, taskName)
             .mapKeys { "%${it.key}%" }
-        val result = ScriptUtils.evalListToBoolean(task.submitConditions, progressMap)
+        val checkConditions = task.submitConditions
+        val bukkitPlayer = Bukkit.getPlayer(player)
+        if (bukkitPlayer != null) {
+            checkConditions.replacePlaceholder(bukkitPlayer)
+        }
+        val result = ScriptUtils.evalListToBoolean(checkConditions, progressMap)
         if (result) {
-            val bukkitPlayer = Bukkit.getPlayer(player)
             if (bukkitPlayer != null) {
                 task.runRewards(bukkitPlayer)
             }
