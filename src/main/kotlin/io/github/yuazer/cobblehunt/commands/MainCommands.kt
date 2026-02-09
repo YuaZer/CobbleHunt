@@ -3,7 +3,9 @@ package io.github.yuazer.cobblehunt.commands
 import io.github.yuazer.cobblehunt.CobbleHunt
 import io.github.yuazer.cobblehunt.api.TaskApi
 import io.github.yuazer.cobblehunt.data.DataLoader
+import io.github.yuazer.cobblehunt.database.DatabaseManager
 import io.github.yuazer.cobblehunt.gui.RotateGui
+import io.github.yuazer.cobblehunt.migration.MigrationManager
 import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
 import taboolib.common.platform.command.*
@@ -199,6 +201,86 @@ object MainCommands {
                 return@execute
             }
             CobbleHunt.playerRotateManager.forceRotate(sender)
+        }
+    }
+
+    @CommandBody(permission = "cobblehunt.migrate")
+    val migrate = subCommand {
+        literal("yaml-to-mysql") {
+            execute<CommandSender> { sender, _, _ ->
+                sender.sendMessage("§e[CobbleHunt] 开始迁移 YML 数据到 MySQL...".colored())
+                sender.sendMessage("§c警告: 此操作将会修改数据库，请确保已备份数据！".colored())
+
+                val result = MigrationManager.migrateYamlToMySQL()
+                if (result.success) {
+                    sender.sendMessage("§a[CobbleHunt] ${result.message}".colored())
+                } else {
+                    sender.sendMessage("§c[CobbleHunt] 迁移失败: ${result.message}".colored())
+                }
+            }
+        }
+        literal("mysql-to-yaml") {
+            execute<CommandSender> { sender, _, _ ->
+                sender.sendMessage("§e[CobbleHunt] 开始导出 MySQL 数据到 YML...".colored())
+                sender.sendMessage("§c警告: 此操作将会覆盖现有 YML 文件，请确保已备份数据！".colored())
+
+                val result = MigrationManager.migrateMySQLToYaml()
+                if (result.success) {
+                    sender.sendMessage("§a[CobbleHunt] ${result.message}".colored())
+                } else {
+                    sender.sendMessage("§c[CobbleHunt] 导出失败: ${result.message}".colored())
+                }
+            }
+        }
+    }
+
+    @CommandBody(permission = "cobblehunt.storage")
+    val storage = subCommand {
+        literal("info") {
+            execute<CommandSender> { sender, _, _ ->
+                val storageType = CobbleHunt.dataStorage?.getStorageType() ?: "未知"
+                sender.sendMessage("§a========== CobbleHunt 存储信息 ==========".colored())
+                sender.sendMessage("§e当前存储模式: §b$storageType".colored())
+
+                if (storageType == "MySQL") {
+                    val isConnected = DatabaseManager.testConnection()
+                    val status = if (isConnected) "§a已连接" else "§c未连接"
+                    sender.sendMessage("§eMySQL 连接状态: $status".colored())
+                    sender.sendMessage("§e表名前缀: §b${DatabaseManager.getTablePrefix()}".colored())
+                }
+
+                val taskCount = DataLoader.taskMap.size
+                val playerTaskCount = DataLoader.playerTaskingMap.keys().size
+                sender.sendMessage("§e已加载任务: §b$taskCount".colored())
+                sender.sendMessage("§e在线玩家数据: §b$playerTaskCount".colored())
+                sender.sendMessage("§a======================================".colored())
+            }
+        }
+        literal("reload") {
+            execute<CommandSender> { sender, _, _ ->
+                sender.sendMessage("§e[CobbleHunt] 重新加载存储配置...".colored())
+                sender.sendMessage("§c警告: 此操作将关闭当前存储连接并重新初始化！".colored())
+
+                // 保存当前数据
+                CobbleHunt.dataStorage?.saveAllData()
+
+                // 关闭当前存储
+                CobbleHunt.dataStorage?.close()
+
+                // 重新加载配置
+                CobbleHunt.config.reload()
+
+                // 重新初始化存储
+                CobbleHunt.dataStorage = io.github.yuazer.cobblehunt.storage.DataStorageFactory.createStorage()
+
+                if (CobbleHunt.dataStorage != null) {
+                    CobbleHunt.dataStorage?.loadAllData()
+                    sender.sendMessage("§a[CobbleHunt] 存储配置重新加载成功！".colored())
+                    sender.sendMessage("§e当前存储模式: §b${CobbleHunt.dataStorage?.getStorageType()}".colored())
+                } else {
+                    sender.sendMessage("§c[CobbleHunt] 存储配置重新加载失败！".colored())
+                }
+            }
         }
     }
 }

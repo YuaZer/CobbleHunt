@@ -1,6 +1,30 @@
 #语言文件
 Lang: "zh_CN"
 
+# 数据存储配置
+storage:
+  # 存储类型: yaml 或 mysql
+  type: "yaml"
+
+  # MySQL 配置（当 type 为 mysql 时生效）
+  mysql:
+    host: "localhost"
+    port: 3306
+    database: "cobblehunt"
+    username: "root"
+    password: "root"
+    # 表名前缀
+    table-prefix: "cobblehunt_"
+    # 连接池配置
+    pool:
+      maximum-pool-size: 10
+      minimum-idle: 2
+      connection-timeout: 30000
+      idle-timeout: 600000
+      max-lifetime: 1800000
+    # 连接失败时是否降级到 YML
+    fallback-to-yaml: true
+
 stateLanguage:
   task-has: "&a已接取"
   task-not-has: "&c未接取"

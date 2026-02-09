@@ -68,13 +68,12 @@ object ScriptUtils {
         }
         return try {
             val result = Arim.evaluator.evaluate(parsedExpression, arimVars)
-            result as? Boolean ?: false
             if (!result) {
-//                println("当前条表达式计算结果为false: \"$expression\"\n替换后: \"$parsedExpression\"")
+                println("当前条表达式计算结果为false: \"$expression\"\n替换后: \"$parsedExpression\"")
             }
             result
         } catch (e: Exception) {
-//            println("布尔表达式计算失败: \"$expression\"\n替换后: \"$parsedExpression\"\n变量: $arimVars")
+            println("布尔表达式计算失败: \"$expression\"\n替换后: \"$parsedExpression\"\n变量: $arimVars")
             false
         }
     }

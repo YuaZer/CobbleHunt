@@ -14,23 +14,35 @@ object PlayerRotateData {
     // 加载
     fun load() {
         playerRotateTime.clear()
-        config.getKeys(false).forEach { player ->
-            playerRotateTime[player] = config.getLong(player)
+        CobbleHunt.dataStorage?.loadAllRotateTime()?.forEach { (player, time) ->
+            playerRotateTime[player] = time
         }
     }
 
     // 保存
     fun save() {
-        playerRotateTime.forEach { (player, time) ->
-            config[player] = time
-        }
-        config.saveToFile(file)
+        // 使用新的存储系统，不需要手动保存
+        // 保留此方法以保持兼容性
     }
 
-    fun get(player: String): Long = playerRotateTime[player] ?: 0L
+    fun get(player: String): Long {
+        // 先从内存获取
+        val memoryTime = playerRotateTime[player]
+        if (memoryTime != null) return memoryTime
+
+        // 内存中没有，从存储加载
+        val storageTime = CobbleHunt.dataStorage?.getRotateTime(player)
+        if (storageTime != null) {
+            playerRotateTime[player] = storageTime
+            return storageTime
+        }
+
+        return 0L
+    }
+
     fun set(player: String, time: Long) {
         playerRotateTime[player] = time
-        config[player] = time
-        config.saveToFile(file)
+        // 使用新的存储系统实时保存
+        CobbleHunt.dataStorage?.setRotateTime(player, time)
     }
 }

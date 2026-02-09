@@ -1,5 +1,6 @@
 package io.github.yuazer.cobblehunt.api
 
+import io.github.yuazer.cobblehunt.CobbleHunt
 import io.github.yuazer.cobblehunt.data.DataLoader
 import io.github.yuazer.cobblehunt.enums.TaskStatus
 import io.github.yuazer.cobblehunt.model.HuntTask
@@ -28,9 +29,13 @@ object TaskApi {
         val task = DataLoader.taskMap[taskName] ?: return false
         if (DataLoader.playerTaskingMap[player].contains(taskName)) return false
         DataLoader.playerTaskingMap.add(player, taskName)
+        // 使用存储系统保存
+        CobbleHunt.dataStorage?.addPlayerTask(player, taskName)
+
         // 初始化该任务所有 countCondition 进度为 0
         task.countConditions.keys.forEach { progressKey ->
             DataLoader.taskCountMap[player, taskName, progressKey] = 0
+            CobbleHunt.dataStorage?.setTaskProgress(player, taskName, progressKey, 0)
         }
         setTaskStatus(player, taskName, TaskStatus.IN_PROGRESS)
         return true
@@ -41,8 +46,11 @@ object TaskApi {
         DataLoader.taskCountMap.keys()
             .filter { it.first == player && it.second == taskName }
             .forEach { (p, t, k) -> DataLoader.taskCountMap.remove(p, t, k) }
-//        setTaskStatus(player, taskName, TaskStatus.NOT_TAKEN)
-//        DataLoader.playerTaskStatusMap.remove(player, taskName)
+
+        // 使用存储系统删除
+        CobbleHunt.dataStorage?.removePlayerTask(player, taskName)
+        CobbleHunt.dataStorage?.deleteTaskProgress(player, taskName)
+
         return removed
     }
 
@@ -94,6 +102,8 @@ object TaskApi {
 
     fun setTaskProgress(player: String, taskName: String, progressKey: String, progress: Int) {
         DataLoader.taskCountMap[player, taskName, progressKey] = progress
+        // 使用存储系统实时保存
+        CobbleHunt.dataStorage?.setTaskProgress(player, taskName, progressKey, progress)
     }
 
     fun addTaskProgress(player: String, taskName: String, progressKey: String, amount: Int = 1): Int {
@@ -134,6 +144,11 @@ object TaskApi {
         DataLoader.playerTaskStatusMap.keys()
             .filter { it.first == player }
             .forEach { (p, t) -> DataLoader.playerTaskStatusMap.remove(p, t) }
+
+        // 使用存储系统删除
+        CobbleHunt.dataStorage?.deleteAllPlayerTasks(player)
+        CobbleHunt.dataStorage?.deletePlayerProgress(player)
+        CobbleHunt.dataStorage?.deletePlayerStatus(player)
     }
 
     fun getAllPlayersTasks(): Map<String, List<String>> =
@@ -170,6 +185,8 @@ object TaskApi {
     // 设置玩家某任务状态
     fun setTaskStatus(player: String, taskName: String, status: TaskStatus) {
         DataLoader.playerTaskStatusMap[player, taskName] = status
+        // 使用存储系统实时保存
+        CobbleHunt.dataStorage?.setTaskStatus(player, taskName, status)
         println("玩家$player 的任务 $taskName 状态已设置为 ${status.inChinese()}")
     }
 

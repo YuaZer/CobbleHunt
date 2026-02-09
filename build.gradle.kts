@@ -102,6 +102,11 @@ dependencies {
 
     taboo("top.maplex.arim:Arim:1.2.14")
     implementation("net.kyori:adventure-api:4.22.0")
+
+    // MySQL 驱动
+    implementation("mysql:mysql-connector-java:8.0.33")
+    // 导入hikari
+    implementation("com.zaxxer:HikariCP:5.1.0")
 }
 
 tasks.processResources {

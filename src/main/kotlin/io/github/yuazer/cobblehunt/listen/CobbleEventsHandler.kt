@@ -18,6 +18,7 @@ import org.bukkit.Bukkit
 import org.bukkit.entity.Player
 
 object CobbleEventsHandler {
+
     fun register() {
         CobblemonEvents.BATTLE_FAINTED.subscribe { event ->
             onBeat(event)
@@ -77,21 +78,27 @@ object CobbleEventsHandler {
 
     fun onBeat(event: BattleFaintedEvent) {
         if (!event.battle.isPvW) return
+
         playersLoop@ for (serverPlayer in event.battle.players) {
             val player = Bukkit.getPlayer(serverPlayer.uuid)
-                ?: //                println("çŽ©å®¶ä¸å­˜åœ¨")
-                continue@playersLoop
+                ?: run {
+                    // 玩家不存在
+                    continue@playersLoop
+                }
+
             val pokemon = event.killed.originalPokemon
             val pokeOwnerUUID = pokemon.getOwnerUUID()
-            // ç¡®è®¤å‡»æ€å®å¯æ¢¦ä¸å±žäºŽè¯¥çŽ©å®?
+
+            // 确认击杀宝可梦不属于该玩家
             if (pokeOwnerUUID != null && (pokeOwnerUUID.toString() == player.uniqueId.toString())) {
-//                println("çŽ©å®¶ç²¾çµæ­»äº¡,è·³è¿‡è®¡ç®—")
+                // 玩家精灵死亡，跳过计算
                 continue
             }
+
             val tasks = TaskApi.getPlayerTasks(player.name)
             for (taskName in tasks) {
                 val task = TaskApi.getTask(taskName) ?: continue
-                // éåŽ†æ‰€æœ?countConditionsï¼Œtype å¿…é¡»æ˜?"beat"
+                // 遍历所有 countConditions，type 必须是 "beat"
                 for ((progressKey, countCondition) in task.countConditions) {
                     if (countCondition.type != TaskApi.BEAT_PROGRESS_PREFIX_KEY) continue
                     if (countCondition.conditions.isEmpty() ||
