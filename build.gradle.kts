@@ -84,7 +84,7 @@ repositories {
     mavenCentral()
 }
 dependencies {
-    // To change the versions see the gradle.properties file
+    // To change the versions see the gradle.properties file 123
     minecraft("com.mojang:minecraft:${project.property("minecraft_version")}")
     mappings(loom.officialMojangMappings())
     modImplementation("net.fabricmc:fabric-loader:${project.property("loader_version")}")
